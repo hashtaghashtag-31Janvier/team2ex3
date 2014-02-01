@@ -1,28 +1,10 @@
-import collections
-import time
+# Fonctionne avec tous les jeux d'essais, il faut maintenant essayer de dessiner le truc
+# Bonne chance Gab
 
-#Fonctionne avec tous les jeux d'essais, il faut maintenant essayer de dessiner le truc
-#Bonne chance Gab
-
-#dictionary?
-relations = {}
-
-N = int(input('Entree\n'))
-for i in range(N):
-    inputString = input()
-    X,Y = inputString.split(" ")
-    X = int(X)
-    Y = int(Y)
-
-    if X in relations:
-        relations[X].append(Y)
-    else:
-        relations[X] = [Y]
-
-max_length = {}
 
 def findMaxLength(i):
-    if i in max_length: return max_length[i]
+    if i in max_length:
+        return max_length[i]
     maximum = 0
     if i in relations:
         for voisin in relations[i]:
@@ -30,49 +12,66 @@ def findMaxLength(i):
     max_length[i] = maximum + 1
     return max_length[i]
 
-current_max = 0
-current_index = -1
 
-for i in relations.keys():
-    if current_max < findMaxLength(i):
-        current_max = max_length[i]
-        current_index = i
-    
-print(current_max, current_index)
+if __name__ == "__main__":
 
-######CODE DE DESSIN ICI
-#exemple pour relation: {2:[3,4]} Cela veut dire qu'il y a un arc de 2 vers 3
-#                                   et de 2 vers 4
-#max_length contient la longueur maximale d'un chemin qui commence a ce noeurds la
-#ex: {2:2,3:1,4:1} le noeud 2 est le commencement d'un chemin de longeur 2
+    # dictionary?
+    relations = {}
 
+    N = int(input('Entree\n'))
+    for i in range(N):
+        inputString = str(raw_input())
+        X, Y = inputString.split(" ")
+        X = int(X)
+        Y = int(Y)
 
-#je vais essayer d'imprimer en console la chaine la plus longue au moins
+        if X in relations:
+            relations[X].append(Y)
+        else:
+            relations[X] = [Y]
 
-print("relations: " + str(relations))
-print("Max_length: " + str(max_length))
-printstr = str(current_index)
+    # Test variables
+    # N = 8
+    # relations = {1: [2, 3], 2: [4, 5], 3: [4], 10: [11, 1, 3]}
+    max_length = {}
 
-for n in range(current_max-1):
-    print(current_max, current_index)
-    maxv = 0
-    maxi = relations[current_index][0]
-    for i in relations[current_index][1:]:
+    current_max = 0
+    current_index = -1
+
+    for i in relations.keys():
         if current_max < findMaxLength(i):
-           current_max = max_length[i]
-           current_index = i
-    current_max = maxv
-    current_index = maxi
-    printstr += " -> " + str(current_index)
+            current_max = max_length[i]
+            current_index = i
 
-print(printstr)
+    print "Solution:", current_max, "@ index:", current_index
+
+    # CODE DE DESSIN ICI
+    # exemple pour relation: {2:[3,4]} Cela veut dire qu'il y a un arc de 2 vers 3
+    #                                   et de 2 vers 4
+    # max_length contient la longueur maximale d'un chemin qui commence a ce noeud la
+    # ex: {2:2,3:1,4:1} le noeud 2 est le commencement d'un chemin de longeur 2
+
+    print("relations: " + str(relations))
+    print("Max_length: " + str(max_length))
+    printstr = str(current_index)
+
+    for n in range(current_max - 1):
+        # debugging
+        print "current max:", current_max, "current_index", current_index
+        maxv = 0
+        maxi = relations[current_index][0]
+        for i in relations[current_index][1:]:
+            if current_max < findMaxLength(i):
+                current_max = max_length[i]
+                current_index = i
+        current_max = maxv
+        current_index = maxi
+        printstr += " -> " + str(current_index)
+
+    print printstr
 
 
-
-
-
-                      
-#exemple linked chain---------
+# exemple linked chain---------
 """
 # very lost. such python. so dont know what im doing. wow.
 class Node(object):
