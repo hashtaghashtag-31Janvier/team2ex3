@@ -1,26 +1,77 @@
 import collections
 import time
 
+#Fonctionne avec tous les jeux d'essais, il faut maintenant essayer de dessiner le truc
+#Bonne chance Gab
+
 #dictionary?
-#relations = {}
-relations=[]
+relations = {}
 
-N = int(raw_input('Entree\n'))
-while N > 0 :
-    print N
-    inputString = raw_input("\n")
-    person = inputString.split(" ")
-    relations.append(person)
-    
-    #tempPerson = person[0]
-    #person.pop[0]
-    #relations[tempPerson] = person
-    
-    print relations[0]
+N = int(input('Entree\n'))
+for i in range(N):
+    inputString = input()
+    X,Y = inputString.split(" ")
+    X = int(X)
+    Y = int(Y)
 
-    N-=1
+    if X in relations:
+        relations[X].append(Y)
+    else:
+        relations[X] = [Y]
+
+max_length = {}
+
+def findMaxLength(i):
+    if i in max_length: return max_length[i]
+    maximum = 0
+    if i in relations:
+        for voisin in relations[i]:
+            maximum = max(maximum, findMaxLength(voisin))
+    max_length[i] = maximum + 1
+    return max_length[i]
+
+current_max = 0
+current_index = -1
+
+for i in relations.keys():
+    if current_max < findMaxLength(i):
+        current_max = max_length[i]
+        current_index = i
     
-    
+print(current_max, current_index)
+
+######CODE DE DESSIN ICI
+#exemple pour relation: {2:[3,4]} Cela veut dire qu'il y a un arc de 2 vers 3
+#                                   et de 2 vers 4
+#max_length contient la longueur maximale d'un chemin qui commence a ce noeurds la
+#ex: {2:2,3:1,4:1} le noeud 2 est le commencement d'un chemin de longeur 2
+
+
+#je vais essayer d'imprimer en console la chaine la plus longue au moins
+
+print("relations: " + str(relations))
+print("Max_length: " + str(max_length))
+printstr = str(current_index)
+
+for n in range(current_max-1):
+    print(current_max, current_index)
+    maxv = 0
+    maxi = relations[current_index][0]
+    for i in relations[current_index][1:]:
+        if current_max < findMaxLength(i):
+           current_max = max_length[i]
+           current_index = i
+    current_max = maxv
+    current_index = maxi
+    printstr += " -> " + str(current_index)
+
+print(printstr)
+
+
+
+
+
+                      
 #exemple linked chain---------
 """
 # very lost. such python. so dont know what im doing. wow.
